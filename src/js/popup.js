@@ -26,14 +26,17 @@ class List extends Component {
     return _.chain(info)
       .values()
       .map(app=> {
+        if (_.isEmpty(app) || _.isEmpty(app.name)) return void 0;
         return (
           <a target="_blank" href={app.url ? app.url : 'javascript: void 0'} title={app.url}>
-            <img className={"ico"} src={"ico/" + app.name.replace(/\s+/, '-') + ".ico"} onerror={this.imgErrorHandler}/>
+            <img className={"ico"} src={"ico/" + (app.name || '').replace(/\s+/, '-') + ".ico"}
+                 onerror={this.imgErrorHandler}/>
             {app.name}&nbsp;
             <span className={"version"}>{app.version || ''}</span>
           </a>
         )
       })
+      .filter(v=>v)
       .value();
   }
 

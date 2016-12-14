@@ -82,19 +82,19 @@ const jsGlobalLibs = {
   "Lo-dash": {
     url: "",
     get exist() {
-      return typeof _ === 'function' && _.name === 'lodash'
+      return typeof window._ === 'function' && window._.name === 'lodash'
     },
     get version() {
-      return _.VERSION;
+      return window._.VERSION;
     }
   },
   "underscore": {
     url: "",
     get exist() {
-      return typeof _ !== 'undefined' && typeof _.identity === 'function' && _.identity('abc') === 'abc' && _.name === '_';
+      return typeof window._ !== 'undefined' && typeof window._.identity === 'function' && window._.identity('abc') === 'abc' && window._.name === '_';
     },
     get version() {
-      return _.VERSION;
+      return window._.VERSION;
     }
   },
   "KindEditor": {

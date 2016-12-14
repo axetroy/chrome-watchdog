@@ -1,0 +1,30 @@
+body {
+  width: 200px;
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: #444444;
+  margin: 0;
+  padding: 0;
+  display: block;
+  line-height: 36px;
+  text-decoration: none;
+}
+
+a:not(:last-child) {
+  border-bottom: 1px solid #cbcbcb;
+}
+
+span.version {
+  color: #969696;
+}
+
+img.ico {
+  vertical-align: middle;
+  width: 16px;
+  height: 16px;
+  margin: 0 5px;
+}

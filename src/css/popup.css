@@ -14,6 +14,10 @@ a {
   text-decoration: none;
 }
 
+a:hover {
+  background-color: #f2f2f2;
+}
+
 a:not(:last-child) {
   border-bottom: 1px solid #cbcbcb;
 }
@@ -26,5 +30,5 @@ img.ico {
   vertical-align: middle;
   width: 16px;
   height: 16px;
-  margin: 0 5px;
+  margin: 0 10px;
 }

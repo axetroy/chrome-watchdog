@@ -57,7 +57,7 @@ const cssGlobalLibs = {
 };
 
 // 根据 src="/****" href="/****" 进行判断
-export default function resourceParser() {
+export default function resourceParser(app = {}) {
 
   let css = {};
   let js = {};
@@ -82,5 +82,7 @@ export default function resourceParser() {
       js[lib.name] = _.extend({}, lib);
     });
 
-  return _.extend({}, css, js);
+  _.extend(app, css, js);
+
+  return app;
 }

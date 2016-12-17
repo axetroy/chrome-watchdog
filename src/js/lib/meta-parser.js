@@ -56,16 +56,19 @@ let metaReg = {
   }
 };
 
-export default function metParser() {
-  let app = {};
+export default function metParser(app = {}) {
 
   _.each(document.getElementsByTagName("meta"), function (metaTag) {
     let name = metaTag.name || '';
     if (!metaReg[name]) return;
     _.each(metaReg[name], function (reg, appName) {
+      if (app[appName]) return;
       let match = reg.exec(metaTag.content);
-      if (_.isEmpty(match)) return app[appName] = -1;
-      app[appName] = match[1] ? match[1] : -1;
+      if (_.isEmpty(match)) return app[appName] = {name: appName};
+      app[appName] = {
+        name: appName,
+        version: match[1] ? match[1] : null
+      };
     });
   });
 

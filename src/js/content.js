@@ -6,7 +6,7 @@ let head = document.getElementsByTagName('head')[0];
 
 function insert() {
   let script = document.createElement('script');
-  script.id = 'hello';
+  script.id = 'chromeWatchDog';
   script.type = 'text/javascript';
   script.src = chrome.extension.getURL('parser.bundle.js');
   head.appendChild(script);

@@ -37,3 +37,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 chrome.tabs.onRemoved.addListener(function (tabId) {
   delete tabInfo[tabId];    // free memory
 });
+
+chrome.tabs.onUpdated.addListener(function (tab) {
+  alert(JSON.stringify(tab, null, 2));
+});

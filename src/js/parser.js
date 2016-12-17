@@ -7,11 +7,13 @@ import _ from "underscore";
 import globalParser from './lib/global-parser';
 import metParser from './lib/meta-parser';
 import resourceParser from './lib/resource-parser';
+import classParser from './lib/class-parser';
 
-let apps = globalParser(window);
+let apps = {};
 
-_.extend(apps, resourceParser());
+globalParser(apps);
+resourceParser(apps);
+metParser(apps);
+classParser(apps);
 
-_.extend(apps, metParser());
-
-document.querySelector('#hello').setAttribute('app', JSON.stringify(apps));
+document.querySelector('#chromeWatchDog').setAttribute('app', JSON.stringify(apps));

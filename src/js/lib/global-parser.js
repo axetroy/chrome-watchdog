@@ -59,6 +59,15 @@ const jsGlobalLibs = {
     },
     priority: 20
   },
+  "jQuery UI": {
+    url: "",
+    get exist() {
+      return typeof jQuery === "function" && jQuery.ui;
+    },
+    get version() {
+      return jQuery.ui.version;
+    }
+  },
   "Prototype": {
     url: "",
     get exist() {
@@ -273,8 +282,7 @@ const jsGlobalLibs = {
 };
 
 // 根据全局变量进行判断
-export default function globalParser(global) {
-  let app = {};
+export default function globalParser(app = {}) {
   _.chain(jsGlobalLibs)
     .each((lib, name)=>lib.name = name)
     .filter(lib=>lib.exist)

@@ -9,12 +9,14 @@ function insert(callback) {
   script.id = 'chromeWatchDog';
   script.type = 'text/javascript';
   script.src = chrome.extension.getURL('parser.bundle.js');
-  head.appendChild(script);
 
   script.onload = function () {
     callback(script);
   };
 
+  setTimeout(function () {
+    head.appendChild(script);
+  }, 100);
 }
 
 function parser(script) {

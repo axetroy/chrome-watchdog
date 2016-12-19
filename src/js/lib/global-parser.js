@@ -71,7 +71,7 @@ const jsGlobalLibs = {
   "jQuery UI": {
     url: "",
     get exist() {
-      return typeof jQuery === "function" && jQuery.ui;
+      return typeof jQuery === "function" && !!jQuery.ui;
     },
     get version() {
       return jQuery.ui.version;

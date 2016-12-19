@@ -1,8 +1,8 @@
-# WatchDog
+# 看门狗
 
-a chrome extension to detect the lib,framework,server.
+一个chrome扩展，用于检测类库，框架，服务器。
 
-## 中文文档
+## English Documentation
 
 ## Usage
 

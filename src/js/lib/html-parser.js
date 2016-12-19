@@ -41,6 +41,10 @@ let textTester = {
   "apiDoc": {
     url: "",
     test: /Generated with apiDoc/i
+  },
+  "Hexo": {
+    url: "https://hexo.io",
+    test: /Powered by Hexo/i
   }
 };
 

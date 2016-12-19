@@ -13,9 +13,20 @@ class List extends Component {
       this.state.tab = tab;
       chrome.runtime.sendMessage({action: 'GET', id: tab.id}, (response)=> {
         let currentTabInfo = this.state.bg.tabInfo[tab.id];
+        console.log(currentTabInfo);
         this.setState({info: currentTabInfo});
       });
     });
+
+    chrome.runtime.onMessage.addListener(function (request, sender, response) {
+      console.log(request);
+      switch (request.action) {
+        case 'UPDATE:POP':
+
+          break;
+      }
+    })
+
   }
 
   imgErrorHandler(event) {

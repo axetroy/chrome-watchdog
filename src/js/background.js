@@ -11,9 +11,10 @@ import headersParser from './lib/headers-parser';
     tabInfo[details.tabId].server = {};
     let app = headersParser(details.responseHeaders);
     _.extend(tabInfo[details.tabId].server, app);
+    chrome.runtime.sendMessage({action: 'UPDATE:POP', app: tabInfo[details.tabId]});
   }, {
     urls: ['<all_urls>'],
-    types: ['main_frame']
+    types: ['main_frame', 'xmlhttprequest', 'script']
   }, ['responseHeaders']);
 
   function changeIcon(id, app = {}) {

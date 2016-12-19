@@ -242,6 +242,12 @@ const jsGlobalLibs = {
       return window.prettyPrint;
     }
   },
+  "Facebook": {
+    url: "",
+    get exist() {
+      return window.FB && window.FB.api;
+    }
+  },
   "Twitter": {
     url: "",
     get exist() {

@@ -15,7 +15,7 @@ const jsGlobalLibs = {
   "React": {
     url: "https://facebook.github.io",
     get exist() {
-      return typeof React === 'object' || typeof ReactDOM === 'object' || typeof ReactPlayground === 'function';
+      return typeof React === 'object' || typeof ReactDOM === 'object' || typeof ReactPlayground === 'function' || !!document.querySelector('[data-reactid]');
     },
     get version() {
       return window.React ? React.version : window.ReactDOM ? ReactDOM.version : null;

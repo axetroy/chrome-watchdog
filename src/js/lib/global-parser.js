@@ -12,6 +12,15 @@ const jsGlobalLibs = {
     },
     priority: 10
   },
+  "React": {
+    url: "https://facebook.github.io",
+    get exist() {
+      return typeof React === 'object' || typeof ReactDOM === 'object' || typeof ReactPlayground === 'function';
+    },
+    get version() {
+      return window.React ? React.version : window.ReactDOM ? ReactDOM.version : null;
+    }
+  },
   "avalon": {
     url: "",
     get exist() {

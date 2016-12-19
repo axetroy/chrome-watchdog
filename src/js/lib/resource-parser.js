@@ -43,7 +43,7 @@ const jsScriptTags = {
   "cnzz": {existReg: /(w|s\d+)\.cnzz\.com\/(c|stat)\.php/i},
   "reCaptcha": {existReg: /(google\.com\/recaptcha|api\.recaptcha\.net\/)/i},
   "script.aculo.us": {existReg: /scriptaculous\.js/i},
-  "segmentfault": {existReg: /w\.segmentfault\.com\/card\/\d+\.js/i}
+  "segmentfault": {existReg: /w\.segmentfault\.com\/card\/\d+\.js/i},
 };
 const cssGlobalLibs = {
   "Bootstrap": {
@@ -53,7 +53,10 @@ const cssGlobalLibs = {
   "Font Awesome": {
     url: "https://github.com/FontAwesome/Font-Awesome",
     existReg: /font-awesome\.(min\.)?css/,
-  }
+  },
+  "jsDoc": {
+    existReg: /jsdoc\.(min\.)?css/i
+  },
 };
 
 // 根据 src="/****" href="/****" 进行判断

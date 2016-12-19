@@ -303,10 +303,7 @@ const jsGlobalLibs = {
     url: "",
     get exist() {
       return window.Rx;
-    },
-    get version() {
-      return jQuery.hotkeys.version;
-    },
+    }
   },
   "flv.js": {
     url: "https://github.com/Bilibili/flv.js",

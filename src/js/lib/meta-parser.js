@@ -40,7 +40,8 @@ let metaReg = {
     "DataLifeEngine": /DataLife Engine/,
     "ClanSphere": /ClanSphere/,
     "Mura CMS": /Mura CMS\s*(.*)/i,
-    "Tiki Wiki CMS Groupware": /Tiki/i
+    "Tiki Wiki CMS Groupware": /Tiki/i,
+    "GitBook": /GitBook\s([\d\.]+)/
   },
   "copyright": {
     "phpBB": /phpBB/i

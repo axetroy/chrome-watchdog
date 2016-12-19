@@ -9,7 +9,7 @@ const knownHeaders = {
     "Nette": /Nette Framework/
   },
   "server": {
-    "Tengine": /Tengine(.*)/,
+    "Tengine": /Tengine(.*)/i,
     "Apache": /Apache[^-]?\/?(.*)/,
     "Tomcat": /Apache-Coyote\/?.*/,
     "GitHub": /GitHub.com/,
@@ -17,7 +17,8 @@ const knownHeaders = {
     "Play": /Play\/?(.*)/,
     "nginx": /nginx\/?(.*)/,
     "IIS": /Microsoft-IIS\/?(.*)/,
-    "QFE": /qfe/i
+    "QFE": /qfe/i,
+    "ZWS": /ZWS/i
   },
   "via": {
     "Varnish": /(.*) varnish/

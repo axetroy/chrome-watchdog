@@ -12,6 +12,21 @@ const jsGlobalLibs = {
     },
     priority: 10
   },
+  "UI Router": {
+    url: "",
+    get exist() {
+      let root = document.querySelector('[ng-app]');
+      if (typeof angular !== 'object' || !root) return false;
+      let injector = angular.element(root).injector();
+      let $state;
+      try {
+        $state = injector.get('$state');
+      } catch (err) {
+        return false;
+      }
+      return typeof angular === 'object' && typeof $state === 'object' && typeof $state.go === 'function';
+    }
+  },
   "React": {
     url: "https://facebook.github.io",
     get exist() {

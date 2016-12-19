@@ -77,6 +77,12 @@ const jsGlobalLibs = {
       return Prototype.Version;
     }
   },
+  "Zepto.js": {
+    url: "https://github.com/madrobby/zepto",
+    get exist() {
+      return typeof Zepto !== 'undefined' && Zepto.fn;
+    }
+  },
   "moment": {
     url: "https://github.com/moment/moment",
     get exist() {
@@ -89,7 +95,7 @@ const jsGlobalLibs = {
   "webpack": {
     url: "https://github.com/webpack/webpack",
     get exist() {
-      return typeof webpackJsonp === 'function';
+      return typeof webpackJsonp === 'function' || typeof webpackHotUpdate === 'function';
     }
   },
   "Lo-dash": {
@@ -221,6 +227,12 @@ const jsGlobalLibs = {
       return window.google && window.google.load;
     }
   },
+  "Google Code Prettify": {
+    url: "http://code.google.com/p/google-code-prettify/",
+    get exist() {
+      return window.prettyPrint;
+    }
+  },
   "Twitter": {
     url: "",
     get exist() {
@@ -248,10 +260,13 @@ const jsGlobalLibs = {
       return document.cookie.indexOf("LtpaToken") != -1 || document.cookie.indexOf("DomAuthSessId") != -1;
     }
   },
-  "babel": {
-    url: "",
+  "Babel": {
+    url: "https://babeljs.io",
     get exist() {
-      return window.babelHelpers;
+      return window.Babel || window.babelHelpers || typeof regeneratorRuntime === 'object';
+    },
+    get version() {
+      return window.Babel && Babel.version ? Babel.version : null;
     }
   },
   "jQuery.hotkeys": {
@@ -277,6 +292,15 @@ const jsGlobalLibs = {
     get version() {
       return jQuery.hotkeys.version;
     },
+  },
+  "flv.js": {
+    url: "https://github.com/Bilibili/flv.js",
+    get exist() {
+      return window.flvjs;
+    },
+    get version() {
+      return flvjs.version;
+    }
   }
 
 };

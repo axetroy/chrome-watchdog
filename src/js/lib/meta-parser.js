@@ -60,11 +60,14 @@ export default function metParser(app = {}) {
 
   _.each(document.getElementsByTagName("meta"), function (metaTag) {
     let name = metaTag.name || '';
-    if (!metaReg[name]) return;
+
+    if (!metaReg[name]) return; // unknown meta
+
     _.each(metaReg[name], function (reg, appName) {
-      if (app[appName]) return;
+      if (app[appName]) return;       // 已经存在了，就不再检测了
       let match = reg.exec(metaTag.content);
-      if (_.isEmpty(match)) return app[appName] = {name: appName};
+      if (_.isEmpty(match)) return;   // not match
+      if (match.length === 1) return app[appName] = {name: appName};    // not fount version
       app[appName] = {
         name: appName,
         version: match[1] ? match[1] : null

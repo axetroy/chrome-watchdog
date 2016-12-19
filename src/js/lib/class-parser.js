@@ -6,7 +6,7 @@ import _ from 'underscore';
 
 const cssClass = {
   'Bootstrap': ['hero-unit', '.carousel-control', '[class^="icon-"]:last-child'],
-  'Font Awesome': ['.fa', '.fa-', '.fa-lg']
+  'Font Awesome': ['.fa-', '.fa-lg']
 };
 
 export default function classParser(app = {}) {

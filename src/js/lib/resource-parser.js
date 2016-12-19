@@ -51,7 +51,7 @@ const cssGlobalLibs = {
     existReg: /bootstrap(-theme)?\.(min\.)?css/
   },
   "Font Awesome": {
-    url: "https://github.com/FortAwesome/Font-Awesome",
+    url: "https://github.com/FontAwesome/Font-Awesome",
     existReg: /font-awesome\.(min\.)?css/,
   }
 };

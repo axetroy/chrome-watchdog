@@ -7,22 +7,25 @@ class List extends Component {
     super();
     this.state.bg = chrome.extension.getBackgroundPage();
     this.state.info = {};
+    this.state.tab = {};
 
     chrome.tabs.getSelected(null, (tab)=> {
-      chrome.tabs.sendMessage(tab.id, {type: 0, tab: tab.id}, (response)=> {
+      this.state.tab = tab;
+      chrome.runtime.sendMessage({action: 'GET', id: tab.id}, (response)=> {
         let currentTabInfo = this.state.bg.tabInfo[tab.id];
         this.setState({info: currentTabInfo});
       });
     });
-
   }
 
   imgErrorHandler(event) {
     let ele = event.srcElement;
-    ele.style.visibility = 'hidden';
+    // ele.style.visibility = 'hidden';
+    ele.src = 'ico/unknown.ico';
   }
 
   renderList(info) {
+    info = _.extend({}, info.server, info.client);
     return _.chain(info)
       .values()
       .map(app=> {
@@ -47,6 +50,19 @@ class List extends Component {
       </div>
     )
   }
+
+  // after render
+  componentDidUpdate() {
+    let currentTab = this.state.tab;
+    chrome.runtime.sendMessage({
+      action: 'POP:DONE',
+      id: currentTab.id,
+      title: currentTab.title,
+      app: this.state.bg.tabInfo[currentTab.id]
+    });
+    return true;
+  }
+
 }
 
 render(<List />, document.body);

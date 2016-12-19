@@ -2,9 +2,9 @@
  * Created by axetroy on 16-12-13.
  */
 
-let head = document.getElementsByTagName('head')[0];
 
-function insert() {
+function insert(callback) {
+  let head = document.getElementsByTagName('head')[0];
   let script = document.createElement('script');
   script.id = 'chromeWatchDog';
   script.type = 'text/javascript';
@@ -12,20 +12,27 @@ function insert() {
   head.appendChild(script);
 
   script.onload = function () {
-    let appRaw = script.getAttribute('app');
-    let app = {};
-    try {
-      app = JSON.parse(appRaw);
-    } catch (err) {
-
-    }
-    chrome.runtime.sendMessage({action: 'PARSE', data: app});
+    callback(script);
   };
 
 }
 
-if (head) {
-  insert();
-} else {
+function parser(script) {
+  let appRaw = script.getAttribute('app');
+  let app = {};
+  try {
+    app = JSON.parse(appRaw);
+  } catch (err) {
 
+  }
+  return app;
 }
+
+function init() {
+  insert(function (script) {
+    let app = parser(script);
+    chrome.runtime.sendMessage({action: 'CONTENT:PARSE', data: app});
+  })
+}
+
+init();

@@ -26,6 +26,7 @@
   ],
   "permissions": [
     "tabs",
+    "webNavigation",
     "webRequest",
     "http://*/*",
     "https://*/*"

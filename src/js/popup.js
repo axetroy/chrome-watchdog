@@ -28,6 +28,7 @@ class List extends Component {
     info = _.extend({}, info.server, info.client);
     return _.chain(info)
       .values()
+      .sortBy(app=>app.name)
       .map(app=> {
         if (_.isEmpty(app) || _.isEmpty(app.name)) return void 0;
         return (

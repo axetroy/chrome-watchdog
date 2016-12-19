@@ -2,7 +2,7 @@
 
 a chrome extension to detect the lib,framework,server.
 
-## 中文文档
+## [中文文档](https://github.com/axetroy/WatchDog/blob/master/README-zh-CN.md)
 
 ## Usage
 

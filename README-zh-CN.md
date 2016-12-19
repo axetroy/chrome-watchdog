@@ -2,7 +2,7 @@
 
 一个chrome扩展，用于检测类库，框架，服务器。
 
-## English Documentation
+## [English Documentation](https://github.com/axetroy/WatchDog/blob/master/README.md)
 
 ## Usage
 

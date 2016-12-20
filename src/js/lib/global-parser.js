@@ -168,7 +168,7 @@ const jsGlobalLibs = {
     }
   },
   "Echarts": {
-    url: "",
+    url: "http://echarts.baidu.com/",
     get exist() {
       return typeof echarts === 'object';
     },

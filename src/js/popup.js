@@ -38,7 +38,7 @@ class List extends Component {
     chrome.tabs.getSelected(null, (tab)=> {
       this.state.tab = tab;
       chrome.runtime.sendMessage({action: 'GET', id: tab.id}, (response)=> {
-        let apps = this.state.bg.tabInfo[tab.id];
+        let apps = this.state.bg.appInfo[tab.id];
         this.setState({apps: transform(apps)});
       });
     });

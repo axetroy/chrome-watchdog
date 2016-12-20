@@ -6,19 +6,19 @@ import transform from './lib/transform';
 import headersParser from './lib/headers-parser';
 
 (function (global) {
-  const tabInfo = global.tabInfo = {};
+  const appInfo = global.appInfo = {};
 
   // 改变图标
-  function changeIcon(id) {
-    let app = transform(tabInfo[id]);
+  function changeIcon(tabId) {
+    let app = transform(appInfo[tabId]);
     let firstApp = app[0];
     if (_.isEmpty(firstApp) || !firstApp.name) return;
     chrome.pageAction.setIcon({
-      tabId: id,
+      tabId,
       path: `ico/${firstApp.name.replace(/\s/, '-')}.ico`
     });
     chrome.pageAction.setTitle({
-      tabId: id,
+      tabId,
       title: 'Watch Dog'
     });
   }
@@ -48,8 +48,11 @@ import headersParser from './lib/headers-parser';
   // 监听http请求，读取header
   chrome.webRequest.onHeadersReceived.addListener(function (details) {
     if (details.tabId < 0)return;   // ignore the background tab
-    tabInfo[details.tabId] = tabInfo[details.tabId] || {};
-    tabInfo[details.tabId].server = tabInfo[details.tabId].server || {};
+
+    if (details.type === 'main_frame') delete appInfo[details.tabId];   // first load and delete the last tab
+
+    appInfo[details.tabId] = appInfo[details.tabId] || {};
+    appInfo[details.tabId].server = appInfo[details.tabId].server || {};
 
     co(function*() {
       let tab = yield getTabById(details.tabId);
@@ -58,11 +61,8 @@ import headersParser from './lib/headers-parser';
 
       // parse the header
       let app = headersParser(details.responseHeaders);
-      _.extend(tabInfo[details.tabId].server, app);
-      // console.log(details.type, JSON.stringify(details.responseHeaders));
-      // console.log(details.type, details.url, tabInfo[details.tabId]);
-      app = tabInfo[details.tabId];
-      console.log(details.type, details.url, JSON.stringify(app));
+      _.extend(appInfo[details.tabId].server, app);
+      app = appInfo[details.tabId];
       chrome.runtime.sendMessage({action: 'UPDATE:POP', app});
 
     }).catch(function (err) {
@@ -76,28 +76,28 @@ import headersParser from './lib/headers-parser';
 
   // 消息监听
   chrome.runtime.onMessage.addListener(function (request = {}, sender, sendResponse) {
-    let id = sender.tab ? sender.tab.id : request.id ? request.id : null;
+    let tabId = sender.tab ? sender.tab.id : request.id ? request.id : null;
     switch (request.action) {
       case 'GET':             // popup 获取
         break;
       case 'CONTENT:PARSE':   // content 解析完成
-        tabInfo[id] = tabInfo[id] || {};
-        tabInfo[id].client = request.data;
+        appInfo[tabId] = appInfo[tabId] || {};
+        appInfo[tabId].client = request.data;
 
-        changeIcon(id, tabInfo[id]);
-        chrome.pageAction.show(id);
+        changeIcon(tabId, appInfo[tabId]);
+        chrome.pageAction.show(tabId);
         break;
       case 'POP:DONE':        // pop 渲染完成
-        changeIcon(id, request.app);
+        changeIcon(tabId, request.app);
         break;
       default:
     }
-    sendResponse({message: request, sender, sendResponse, app: tabInfo[id] || {}});
+    sendResponse({message: request, sender, sendResponse, app: appInfo[tabId] || {}});
   });
 
   // when close the tab
   chrome.tabs.onRemoved.addListener(function (tabId) {
-    delete tabInfo[tabId];    // free memory
+    delete appInfo[tabId];    // free memory
   });
 
 })(typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : this || {});

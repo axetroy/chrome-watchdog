@@ -334,6 +334,12 @@ const jsGlobalLibs = {
     get version() {
       return flvjs.version;
     }
+  },
+  "Handlebars.js": {
+    url: "http://handlebarsjs.com/",
+    get exist() {
+      return !!document.querySelector('script[type="text/x-handlebars-template"]');
+    }
   }
 
 };

@@ -8,12 +8,18 @@ import resourceParser from './lib/resource-parser';
 import classParser from './lib/class-parser';
 import htmlParser from './lib/html-parser';
 
-let apps = {};
+function parse() {
+  let apps = {};
 
-globalParser(apps);
-resourceParser(apps);
-metParser(apps);
-classParser(apps);
-htmlParser(apps);
+  globalParser(apps);
+  resourceParser(apps);
+  metParser(apps);
+  classParser(apps);
+  htmlParser(apps);
 
-document.querySelector('#chromeWatchDog').setAttribute('app', JSON.stringify(apps || {}));
+  document.querySelector('#chromeWatchDog').setAttribute('app', JSON.stringify(apps || {}));
+  return apps;
+}
+
+parse();
+

@@ -167,6 +167,15 @@ const jsGlobalLibs = {
       return Highcharts.version;
     }
   },
+  "Echarts": {
+    url: "",
+    get exist() {
+      return typeof echarts === 'object';
+    },
+    get version() {
+      return echarts.version;
+    }
+  },
   "YUI": {
     url: "",
     get exist() {
@@ -336,6 +345,21 @@ const jsGlobalLibs = {
     url: "http://handlebarsjs.com/",
     get exist() {
       return !!document.querySelector('script[type="text/x-handlebars-template"]');
+    }
+  },
+  "SystemJS": {
+    url: "https://github.com/systemjs/systemjs",
+    get exist() {
+      return window.SystemJS;
+    },
+    get version() {
+      return SystemJS.version;
+    }
+  },
+  "three.js": {
+    url: "",
+    get exist() {
+      return window.THREE && typeof THREE === 'function';
     }
   }
 

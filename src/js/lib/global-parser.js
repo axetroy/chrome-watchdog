@@ -13,7 +13,7 @@ const jsGlobalLibs = {
     priority: 10
   },
   "UI Router": {
-    url: "",
+    url: "https://github.com/angular-ui/ui-router",
     get exist() {
       let root = document.querySelector('[ng-app]');
       if (typeof angular !== 'object' || !root) return false;

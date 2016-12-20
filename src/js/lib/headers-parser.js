@@ -37,9 +37,7 @@ export default function headersParser(headers) {
       if (match && match.length >= 1) {
         app[appName] = {
           name: appName,
-          url: '',
           exist: true,
-          priority: 0,
           version: match[1] || null
         };
       }

@@ -9,8 +9,7 @@ const jsGlobalLibs = {
     },
     get version() {
       return angular.version.full;
-    },
-    priority: 10
+    }
   },
   "UI Router": {
     url: "https://github.com/angular-ui/ui-router",
@@ -80,8 +79,7 @@ const jsGlobalLibs = {
     },
     get version() {
       return jQuery.prototype.jquery;
-    },
-    priority: 20
+    }
   },
   "jQuery UI": {
     url: "",

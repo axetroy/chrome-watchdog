@@ -56,12 +56,13 @@ export default function htmlParser(app = {}) {
   let text = document.documentElement.innerText;
 
   _.chain(htmlTester)
-    .reject((reg, appName)=>app[appName])
-    .filter(reg=>reg.test(html))
-    .each(function (reg, name) {
-      app[name] = {
+    .each((reg, appName)=>htmlTester[appName] = {test: reg, name: appName})
+    .reject(v=>app[v.name])
+    .filter(app=>app.test.test(html))
+    .each(function (v) {
+      app[v.name] = {
         exist: true,
-        name: name
+        name: v.name
       }
     });
 
@@ -71,6 +72,7 @@ export default function htmlParser(app = {}) {
     .each(function (v) {
       let match = text.match(v.test);
       if (_.isEmpty(match)) return;
+      console.log(v);
       app[v.name] = {
         url: v.url,
         exist: true,

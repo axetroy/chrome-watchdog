@@ -47,7 +47,7 @@ import headersParser from './lib/headers-parser';
 
   // 监听http请求，读取header
   chrome.webRequest.onHeadersReceived.addListener(function (details) {
-    if (details.tabId < 0)return;
+    if (details.tabId < 0)return;   // ignore the background tab
     tabInfo[details.tabId] = tabInfo[details.tabId] || {};
     tabInfo[details.tabId].server = tabInfo[details.tabId].server || {};
 
@@ -60,8 +60,10 @@ import headersParser from './lib/headers-parser';
       let app = headersParser(details.responseHeaders);
       _.extend(tabInfo[details.tabId].server, app);
       // console.log(details.type, JSON.stringify(details.responseHeaders));
-      console.log(details.type, details.url, tabInfo[details.tabId]);
-      chrome.runtime.sendMessage({action: 'UPDATE:POP', app: tabInfo[details.tabId]});
+      // console.log(details.type, details.url, tabInfo[details.tabId]);
+      app = tabInfo[details.tabId];
+      console.log(details.type, details.url, JSON.stringify(app));
+      chrome.runtime.sendMessage({action: 'UPDATE:POP', app});
 
     }).catch(function (err) {
       console.error(err);

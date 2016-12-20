@@ -170,10 +170,10 @@ const jsGlobalLibs = {
   "Echarts": {
     url: "http://echarts.baidu.com/",
     get exist() {
-      return typeof echarts === 'object';
+      return typeof echarts === 'object' || !!document.querySelector('[_echarts_instance_]');
     },
     get version() {
-      return echarts.version;
+      return window.echarts ? echarts.version : null;
     }
   },
   "YUI": {
@@ -360,6 +360,12 @@ const jsGlobalLibs = {
     url: "",
     get exist() {
       return window.THREE && typeof THREE === 'function';
+    }
+  },
+  "axios": {
+    url: "https://github.com/mzabriskie/axios",
+    get exist() {
+      return window.axios;
     }
   }
 

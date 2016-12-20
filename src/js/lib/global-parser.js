@@ -24,7 +24,7 @@ const jsGlobalLibs = {
       } catch (err) {
         return false;
       }
-      return typeof angular === 'object' && typeof $state === 'object' && typeof $state.go === 'function';
+      return (typeof $state === 'object' && typeof $state.go === 'function') || !!document.querySelector(['ui-view']);
     }
   },
   "React": {
@@ -273,10 +273,7 @@ const jsGlobalLibs = {
     url: "",
     get exist() {
       return window.twttr;
-    },
-    get version() {
-      return MooTools.version;
-    },
+    }
   },
   "CodeIgniter": {
     url: "",
@@ -299,7 +296,7 @@ const jsGlobalLibs = {
   "Babel": {
     url: "https://babeljs.io",
     get exist() {
-      return window.Babel || window.babelHelpers || typeof regeneratorRuntime === 'object';
+      return window.Babel || window.babelHelpers || typeof window.regeneratorRuntime === 'object';
     },
     get version() {
       return window.Babel && Babel.version ? Babel.version : null;
@@ -346,11 +343,15 @@ const jsGlobalLibs = {
 
 // 根据全局变量进行判断
 export default function globalParser(app = {}) {
-  _.chain(jsGlobalLibs)
-    .each((lib, name)=>lib.name = name)
-    .filter(lib=>lib.exist)
-    .each(function (lib) {
-      app[lib.name] = _.extend({}, lib, {version: lib.version || null});
-    });
+  try {
+    _.chain(jsGlobalLibs)
+      .each((lib, name)=>lib.name = name)
+      .filter(lib=>lib.exist)
+      .each(function (lib) {
+        app[lib.name] = _.extend({}, lib, {version: lib.version || null});
+      });
+  } catch (err) {
+    console.error(err);
+  }
   return app;
 }

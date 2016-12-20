@@ -1,28 +1,21 @@
 import _ from 'underscore';
+import Q from 'q';
+import co from 'co';
+import transform from './lib/transform';
 
 import headersParser from './lib/headers-parser';
 
 (function (global) {
   const tabInfo = global.tabInfo = {};
 
-  // listen the header
-  chrome.webRequest.onHeadersReceived.addListener(function (details) {
-    tabInfo[details.tabId] = tabInfo[details.tabId] || {};
-    tabInfo[details.tabId].server = {};
-    let app = headersParser(details.responseHeaders);
-    _.extend(tabInfo[details.tabId].server, app);
-    chrome.runtime.sendMessage({action: 'UPDATE:POP', app: tabInfo[details.tabId]});
-  }, {
-    urls: ['<all_urls>'],
-    types: ['main_frame', 'xmlhttprequest', 'script']
-  }, ['responseHeaders']);
-
-  function changeIcon(id, app = {}) {
-    app = _.extend({}, app.server, app.client);
-    app = Object.keys(app);
+  // 改变图标
+  function changeIcon(id) {
+    let app = transform(tabInfo[id]);
+    let firstApp = app[0];
+    if (_.isEmpty(firstApp) || !firstApp.name) return;
     chrome.pageAction.setIcon({
       tabId: id,
-      path: `ico/${app[0].replace(/\s/, '-')}.ico`
+      path: `ico/${firstApp.name.replace(/\s/, '-')}.ico`
     });
     chrome.pageAction.setTitle({
       tabId: id,
@@ -30,7 +23,56 @@ import headersParser from './lib/headers-parser';
     });
   }
 
-  // listen the message
+  // 根据id获取标签
+  function getTabById(tabId) {
+    let deferred = Q.defer();
+    chrome.tabs.get(tabId, (tab)=> {
+      deferred.resolve(tab);
+    });
+    return deferred.promise;
+  }
+
+  // 判断两个url，是否是同源
+  function isSameOrigin(url1) {
+    let originEle = document.createElement('a');
+    originEle.href = url1;
+    return function (url2) {
+      let targetEle = document.createElement('a');
+      targetEle.href = url2;
+      return targetEle.hostname === originEle.hostname ? Q.resolve(true) : Q.resolve(false);
+    }
+  }
+
+  // =========================  主要程序  =========================
+
+  // 监听http请求，读取header
+  chrome.webRequest.onHeadersReceived.addListener(function (details) {
+    if (details.tabId < 0)return;
+    tabInfo[details.tabId] = tabInfo[details.tabId] || {};
+    tabInfo[details.tabId].server = tabInfo[details.tabId].server || {};
+
+    co(function*() {
+      let tab = yield getTabById(details.tabId);
+      let isSame = yield isSameOrigin(tab.url)(details.url);
+      if (!isSame) return;
+
+      // parse the header
+      let app = headersParser(details.responseHeaders);
+      _.extend(tabInfo[details.tabId].server, app);
+      // console.log(details.type, JSON.stringify(details.responseHeaders));
+      console.log(details.type, details.url, tabInfo[details.tabId]);
+      chrome.runtime.sendMessage({action: 'UPDATE:POP', app: tabInfo[details.tabId]});
+
+    }).catch(function (err) {
+      console.error(err);
+    });
+
+  }, {
+    urls: ['<all_urls>'],
+    types: ['main_frame', 'xmlhttprequest', 'ping', 'script', 'stylesheet', 'font', 'object', 'image', 'other']
+  }, ['responseHeaders']);
+
+  // 消息监听
   chrome.runtime.onMessage.addListener(function (request = {}, sender, sendResponse) {
     let id = sender.tab ? sender.tab.id : request.id ? request.id : null;
     switch (request.action) {

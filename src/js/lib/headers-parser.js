@@ -18,7 +18,10 @@ const knownHeaders = {
     "nginx": /nginx\/?(.*)/,
     "IIS": /Microsoft-IIS\/?(.*)/,
     "QFE": /qfe/i,
-    "ZWS": /ZWS/i
+    "ZWS": /ZWS/i,
+    "ESF": /ESF/i,
+    "bfe": /bfe\/?(.*)/i,
+    "sffe": /sffe/
   },
   "via": {
     "Varnish": /(.*) varnish/

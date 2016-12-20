@@ -17,7 +17,13 @@ function parse() {
   classParser(apps);
   htmlParser(apps);
 
-  document.querySelector('#chromeWatchDog').setAttribute('app', JSON.stringify(apps || {}));
+  let script = document.querySelector('#chromeWatchDog');
+  script.setAttribute('app', JSON.stringify(apps || {}));
+
+  // notice the content.js
+  let done = document.createEvent('Event');
+  done.initEvent('ready', true, true);
+  script.dispatchEvent(done);
   return apps;
 }
 

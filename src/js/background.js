@@ -5,6 +5,7 @@ import transform from './lib/transform';
 
 import headersParser from './lib/headers-parser';
 import urlParser from './lib/url-parser';
+import {resolveImg, loadImg} from './lib/resolveImg';
 
 (function (global) {
   const appInfo = global.appInfo = {};
@@ -14,14 +15,22 @@ import urlParser from './lib/url-parser';
     let app = transform(appInfo[tabId]);
     let firstApp = app[0];
     if (_.isEmpty(firstApp) || !firstApp.name) return;
-    chrome.pageAction.setIcon({
-      tabId,
-      path: `ico/${firstApp.name.replace(/\s/, '-')}.ico`
-    });
-    chrome.pageAction.setTitle({
-      tabId,
-      title: 'Watch Dog'
-    });
+    let icoPath = `ico/${firstApp.name.replace(/\s/g, '-')}`;
+    return loadImg(icoPath + '.ico')
+      .then(img=>Q.resolve(img), function () {
+        return resolveImg(icoPath);
+      })
+      .then(function (img) {
+        chrome.pageAction.setIcon({
+          tabId,
+          path: img.src
+        });
+        chrome.pageAction.setTitle({
+          tabId,
+          title: 'Watch Dog'
+        });
+      })
+      .catch(err=>Q.reject(err));
   }
 
   // 根据id获取标签
@@ -74,7 +83,7 @@ import urlParser from './lib/url-parser';
 
       app = appInfo[details.tabId];
       chrome.runtime.sendMessage({action: 'UPDATE:POP', app, id: details.tabId});   // notify the pop update view
-
+      changeIcon(details.tabId);
     }).catch(function (err) {
       console.error(err);
     });

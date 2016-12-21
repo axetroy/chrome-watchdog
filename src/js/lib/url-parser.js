@@ -38,12 +38,10 @@ export default function urlParser(detail) {
     let correctType = _.includes(entity.types, detail.type);
 
     if (exist && correctType) {
-      app[name] = _.extend({}, entity);
+      app[name] = _.extend({exist: true, name}, entity);
     }
 
   });
-
-  console.log(app);
 
   return app;
 }

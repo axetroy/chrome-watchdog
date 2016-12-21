@@ -2,6 +2,7 @@ import "../css/popup.css";
 import {h, render, Component} from 'preact';
 import _ from 'underscore';
 import transform from './lib/transform';
+import {resolveImg} from './lib/resolveImg';
 
 /**
  * 设计流程：
@@ -50,14 +51,22 @@ class List extends Component {
 
   imgErrorHandler(event) {
     let ele = event.srcElement;
-    ele.src = 'ico/unknown.ico';
+    let name = ele.getAttribute('app');
+    resolveImg(`ico/${name}`, ['.png', '.jgp'])
+      .then(function (img) {
+        ele.src = img.src;
+      })
+      .catch(function () {
+        ele.src = 'ico/unknown.ico';
+      });
   }
 
   renderList(apps) {
     return _.map(apps, app=> {
+      let img = resolveImg();
       return (
         <a target="_blank" href={app.url ? app.url : 'javascript: void 0'} title={app.url} app={JSON.stringify(app)}>
-          <img className={"ico"} src={"ico/" + (app.name || '').replace(/\s+/g, '-') + ".ico"}
+          <img className={"ico"} src={"ico/" + (app.name || '').replace(/\s+/g, '-') + ".ico"} app={app.name}
                onerror={this.imgErrorHandler}/>
           {app.name}&nbsp;
           <span className={"version"}>{app.version || ''}</span>

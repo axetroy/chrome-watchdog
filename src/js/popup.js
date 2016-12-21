@@ -57,7 +57,7 @@ class List extends Component {
     return _.map(apps, app=> {
       return (
         <a target="_blank" href={app.url ? app.url : 'javascript: void 0'} title={app.url} app={JSON.stringify(app)}>
-          <img className={"ico"} src={"ico/" + (app.name || '').replace(/\s+/, '-') + ".ico"}
+          <img className={"ico"} src={"ico/" + (app.name || '').replace(/\s+/g, '-') + ".ico"}
                onerror={this.imgErrorHandler}/>
           {app.name}&nbsp;
           <span className={"version"}>{app.version || ''}</span>

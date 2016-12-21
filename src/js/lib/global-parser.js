@@ -380,6 +380,21 @@ const jsGlobalLibs = {
     get exist() {
       return window.axios;
     }
+  },
+  "FastClick": {
+    url: "",
+    get exist() {
+      return window.FastClick;
+    }
+  },
+  "DocSearch": {
+    url: "https://github.com/algolia/docsearch",
+    get exist() {
+      return window.docsearch;
+    },
+    get version() {
+      return docsearch.version;
+    }
   }
 
 };

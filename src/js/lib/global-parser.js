@@ -26,6 +26,21 @@ const jsGlobalLibs = {
       return (typeof $state === 'object' && typeof $state.go === 'function') || !!document.querySelector(['ui-view']);
     }
   },
+  "Angular Material": {
+    url: "https://material.angularjs.org",
+    get exist() {
+      let root = document.querySelector('[ng-app]');
+      if (typeof angular !== 'object' || !root) return false;
+      let injector = angular.element(root).injector();
+      let $mdDialog;
+      try {
+        $mdDialog = injector.get('$mdDialog');
+      } catch (err) {
+        return false;
+      }
+      return (typeof $mdDialog === 'object' && typeof $mdDialog.alert === 'function');
+    }
+  },
   "React": {
     url: "https://facebook.github.io",
     get exist() {

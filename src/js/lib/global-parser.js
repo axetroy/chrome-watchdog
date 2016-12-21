@@ -395,6 +395,12 @@ const jsGlobalLibs = {
     get version() {
       return docsearch.version;
     }
+  },
+  "Socket.io": {
+    url: "http://socket.io",
+    get exist() {
+      return typeof io === 'function' && typeof io.Socket === 'function';
+    }
   }
 
 };

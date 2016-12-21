@@ -72,7 +72,6 @@ export default function htmlParser(app = {}) {
     .each(function (v) {
       let match = text.match(v.test);
       if (_.isEmpty(match)) return;
-      console.log(v);
       app[v.name] = {
         url: v.url,
         exist: true,

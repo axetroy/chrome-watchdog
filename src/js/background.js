@@ -49,7 +49,7 @@ import headersParser from './lib/headers-parser';
   chrome.webRequest.onHeadersReceived.addListener(function (details) {
     if (details.tabId < 0)return;   // ignore the background tab
 
-    if (details.type === 'main_frame') delete appInfo[details.tabId];   // first load and delete the last tab
+    if (details.type === 'main_frame') delete appInfo[details.tabId];   // first load and delete the last tab's data
 
     appInfo[details.tabId] = appInfo[details.tabId] || {};
     appInfo[details.tabId].server = appInfo[details.tabId].server || {};
@@ -63,7 +63,7 @@ import headersParser from './lib/headers-parser';
       let app = headersParser(details.responseHeaders);
       _.extend(appInfo[details.tabId].server, app);
       app = appInfo[details.tabId];
-      chrome.runtime.sendMessage({action: 'UPDATE:POP', app});
+      chrome.runtime.sendMessage({action: 'UPDATE:POP', app, id: details.tabId});   // notify the pop update view
 
     }).catch(function (err) {
       console.error(err);

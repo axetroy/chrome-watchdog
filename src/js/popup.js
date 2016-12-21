@@ -27,7 +27,11 @@ class List extends Component {
     chrome.runtime.onMessage.addListener((request, sender, response)=> {
       switch (request.action) {
         case 'UPDATE:POP':
-          this.setState({apps: transform(request.app)});
+          chrome.tabs.getSelected(null, (tab)=> {
+            this.state.tab = tab;
+            if (tab.id !== request.id) return;
+            this.setState({apps: transform(request.app)});
+          });
           break;
       }
     });

@@ -63,9 +63,10 @@ class List extends Component {
 
   renderList(apps) {
     return _.map(apps, app=> {
-      let img = resolveImg();
+      let url = app.url || `https://www.google.com/#q=${app.name}`;
       return (
-        <a target="_blank" href={app.url ? app.url : 'javascript: void 0'} title={app.url} app={JSON.stringify(app)}>
+        <a target="_blank" href={url} title={url}
+           app={JSON.stringify(app)}>
           <img className={"ico"} src={"ico/" + (app.name || '').replace(/\s+/g, '-') + ".ico"} app={app.name}
                onerror={this.imgErrorHandler}/>
           {app.name}&nbsp;

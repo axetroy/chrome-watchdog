@@ -21,7 +21,7 @@ let htmlTester = {
   '1c-bitrix': /<link[^>]*\/bitrix\/.*?>/i,
   'OpenCMS': /<link[^>]*\.opencms\..*?>/i,
   'HumansTxt': /<link[^>]*href=['"]?\S*?humans\.txt.*?['"].*?\>/i,
-  'Google-Font-Api': /ref=["']?http:\/\/fonts.googleapis.com\//i,
+  'Google Font Api': /ref=["']?http:\/\/fonts.googleapis.com\//i,
   'Prostores': /-legacycss\/Asset">/,
   'osCommerce': /(product_info\.php\?products_id|_eof \/\/-->)/,
   'OpenCart': /index.php\?route=product\/product/,

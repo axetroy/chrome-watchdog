@@ -4,6 +4,7 @@ import co from 'co';
 import transform from './lib/transform';
 
 import headersParser from './lib/headers-parser';
+import urlParser from './lib/url-parser';
 
 (function (global) {
   const appInfo = global.appInfo = {};
@@ -52,16 +53,25 @@ import headersParser from './lib/headers-parser';
     if (details.type === 'main_frame') delete appInfo[details.tabId];   // first load and delete the last tab's data
 
     appInfo[details.tabId] = appInfo[details.tabId] || {};
+    appInfo[details.tabId].client = appInfo[details.tabId].client || {};
     appInfo[details.tabId].server = appInfo[details.tabId].server || {};
+
+    console.log(details.type, details.url);
 
     co(function*() {
       let tab = yield getTabById(details.tabId);
       let isSame = yield isSameOrigin(tab.url)(details.url);
-      if (!isSame) return;
 
-      // parse the header
-      let app = headersParser(details.responseHeaders);
-      _.extend(appInfo[details.tabId].server, app);
+      // parse the url
+      let app = urlParser(details);
+      _.extend(appInfo[details.tabId].client, app);
+
+      if (isSame) {
+        // parse the header
+        let app = headersParser(details.responseHeaders);
+        _.extend(appInfo[details.tabId].server, app);
+      }
+
       app = appInfo[details.tabId];
       chrome.runtime.sendMessage({action: 'UPDATE:POP', app, id: details.tabId});   // notify the pop update view
 

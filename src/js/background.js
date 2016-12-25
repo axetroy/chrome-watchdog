@@ -3,8 +3,8 @@ import Q from 'q';
 import co from 'co';
 import transform from './lib/transform';
 
-import headersParser from './lib/headers-parser';
-import urlParser from './lib/url-parser';
+import headersParser from './parsers/headers-parser';
+import urlParser from './parsers/url-parser';
 import {resolveImg, loadImg} from './lib/resolveImg';
 
 (function (global) {

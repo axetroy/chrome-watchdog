@@ -2,12 +2,12 @@
  * Created by axetroy on 16-12-13.
  */
 
-import globalParser from './lib/global-parser';
-import metParser from './lib/meta-parser';
-import resourceParser from './lib/resource-parser';
-import classParser from './lib/class-parser';
-import htmlParser from './lib/html-parser';
-import commentParser from './lib/comment-parser';
+import globalParser from './parsers/global-parser';
+import metParser from './parsers/meta-parser';
+import resourceParser from './parsers/resource-parser';
+import classParser from './parsers/class-parser';
+import htmlParser from './parsers/html-parser';
+import commentParser from './parsers/comment-parser';
 
 function parse() {
   let apps = {};

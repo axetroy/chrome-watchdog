@@ -20,6 +20,7 @@ const jsScriptTags = {
   "Gallery2": {existReg: /main\.php\?.*g2_.*/i},
   "GetSatisfaction": {existReg: /getsatisfaction\.com\/feedback/i},
   "Google Analytics": {existReg: /google-analytics\.com\/(ga|urchin|analytics).js/i},
+  "Google Api": {existReg: /apis\.google\.\w+\//i},
   "JiaThis": {existReg: /v\d\.jiathis\.com\/code(_mini)?\/(jiathis|jia)/},
   "Jigsy": {existReg: /javascripts\/asterion\.js/},
   "Joomla": {existReg: /\/components\/com_/},
@@ -44,6 +45,7 @@ const jsScriptTags = {
   "reCaptcha": {existReg: /(google\.com\/recaptcha|api\.recaptcha\.net\/)/i},
   "script.aculo.us": {existReg: /scriptaculous\.js/i},
   "segmentfault": {existReg: /w\.segmentfault\.com\/card\/\d+\.js/i},
+  "Twitter": {existReg: /platform\.twitter\.com/i}
 };
 const cssGlobalLibs = {
   "Bootstrap": {

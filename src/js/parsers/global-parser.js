@@ -285,6 +285,12 @@ const jsGlobalLibs = {
       return window.gapi && window.gapi.plusone && true;
     }
   },
+  "Google Ad": {
+    url: "",
+    get exist() {
+      return window.google_ad_client;
+    }
+  },
   "Facebook": {
     url: "",
     get exist() {

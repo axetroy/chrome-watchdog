@@ -1,63 +1,63 @@
 import _ from "underscore";
 
 const jsScriptTags = {
-  "百度统计": {existReg: /hm\.baidu\.com\/hm?\.js/i},
-  "百度分享": {existReg: /bdimg\.share\.baidu\.com\/static\/js\//},
-  "无觅": {existReg: /widget\.wumii\.(cn|com)\/ext\/relatedItemsWidget/},
-  "多说": {existReg: /static\.duoshuo\.com\/embed\.js/},
-  "友言": {existReg: /v\d\.uyan\.cc\/(code\/uyan\.js|js\/iframe\.js)/},
-  "友荐": {existReg: /v\d\.ujian\.cc\/code\/ujian\.js/},
-  "AdSense": {existReg: /pagead\/show_ads\.js/},
-  "AddThis": {existReg: /addthis\.com\/js/},
-  "Alfresco": {existReg: /(alfresco)+(-min)?(\/scripts\/menu)?\.js/},
-  "Avactis": {existReg: /\/avactis-themes\//i},
-  "Bootstrap": {existReg: /bootstrap(-.*)?\.js/},
-  "BuySellAds": {existReg: /buysellads.com\/.*bsa\.js/},
-  "Cappuccino": {existReg: /Frameworks\/Objective-J\/Objective-J\.js/},
-  "Closure": {existReg: /\/goog\/base\.js/i},
-  "Disqus": {existReg: /disqus.com/i},
-  "Dojo": {existReg: /dojo(\.xd)?\.js/i},
-  "Gallery2": {existReg: /main\.php\?.*g2_.*/i},
-  "GetSatisfaction": {existReg: /getsatisfaction\.com\/feedback/i},
-  "Google Analytics": {existReg: /google-analytics\.com\/(ga|urchin|analytics).js/i},
-  "Google Api": {existReg: /apis\.google\.\w+\//i},
-  "JiaThis": {existReg: /v\d\.jiathis\.com\/code(_mini)?\/(jiathis|jia)/},
-  "Jigsy": {existReg: /javascripts\/asterion\.js/},
-  "Joomla": {existReg: /\/components\/com_/},
-  "KISSmetrics": {existReg: /i.kissmetrics.com\/i.js/},
-  "MODx": {existReg: /\/min\/b=.*f=.*/},
-  "Mollom": {existReg: /mollom\/mollom\.js/i},
-  "MooTools": {existReg: /mootools/i},
-  "Mura CMS": {existReg: /mura\/js/},
-  "OpenTag": {existReg: /opentag.*\.js/},
-  "Prototype": {existReg: /prototype\.js/i},
-  "Quantcast": {existReg: /quantserve\.com\/quant\.js/i},
-  "Tiki Wiki CMS Groupware": {existReg: /tiki-js/},
-  "Ubercart": {existReg: /uc_cart/i},
-  "Volusion": {existReg: /a\/j\/javascripts\.js/},
-  "Weebly": {existReg: /weebly\.com\/weebly\//},
-  "Wibiya": {existReg: /wibiya\.com\/Loaders\//i},
-  "XenForo": {existReg: /js\/xenforo\//i},
-  "Yola": {existReg: /analytics\.yola\.net/},
-  "ZenPhoto": {existReg: /zp-core\/js/i},
-  "bShare": {existReg: /static\.bshare\.cn\/b/},
-  "cnzz": {existReg: /(w|s\d+)\.cnzz\.com\/(c|stat)\.php/i},
-  "reCaptcha": {existReg: /(google\.com\/recaptcha|api\.recaptcha\.net\/)/i},
-  "script.aculo.us": {existReg: /scriptaculous\.js/i},
-  "segmentfault": {existReg: /w\.segmentfault\.com\/card\/\d+\.js/i},
-  "Twitter": {existReg: /platform\.twitter\.com/i}
+  "百度统计": {test: /hm\.baidu\.com\/hm?\.js/i},
+  "百度分享": {test: /bdimg\.share\.baidu\.com\/static\/js\//},
+  "无觅": {test: /widget\.wumii\.(cn|com)\/ext\/relatedItemsWidget/},
+  "多说": {test: /static\.duoshuo\.com\/embed\.js/},
+  "友言": {test: /v\d\.uyan\.cc\/(code\/uyan\.js|js\/iframe\.js)/},
+  "友荐": {test: /v\d\.ujian\.cc\/code\/ujian\.js/},
+  "AdSense": {test: /pagead\/show_ads\.js/},
+  "AddThis": {test: /addthis\.com\/js/},
+  "Alfresco": {test: /(alfresco)+(-min)?(\/scripts\/menu)?\.js/},
+  "Avactis": {test: /\/avactis-themes\//i},
+  "Bootstrap": {test: /bootstrap(-.*)?\.js/},
+  "BuySellAds": {test: /buysellads.com\/.*bsa\.js/},
+  "Cappuccino": {test: /Frameworks\/Objective-J\/Objective-J\.js/},
+  "Closure": {test: /\/goog\/base\.js/i},
+  "Disqus": {test: /disqus.com/i},
+  "Dojo": {test: /dojo(\.xd)?\.js/i},
+  "Gallery2": {test: /main\.php\?.*g2_.*/i},
+  "GetSatisfaction": {test: /getsatisfaction\.com\/feedback/i},
+  "Google Analytics": {test: /google-analytics\.com\/(ga|urchin|analytics).js/i},
+  "Google Api": {test: /apis\.google\.\w+\//i},
+  "JiaThis": {test: /v\d\.jiathis\.com\/code(_mini)?\/(jiathis|jia)/},
+  "Jigsy": {test: /javascripts\/asterion\.js/},
+  "Joomla": {test: /\/components\/com_/},
+  "KISSmetrics": {test: /i.kissmetrics.com\/i.js/},
+  "MODx": {test: /\/min\/b=.*f=.*/},
+  "Mollom": {test: /mollom\/mollom\.js/i},
+  "MooTools": {test: /mootools/i},
+  "Mura CMS": {test: /mura\/js/},
+  "OpenTag": {test: /opentag.*\.js/},
+  "Prototype": {test: /prototype\.js/i},
+  "Quantcast": {test: /quantserve\.com\/quant\.js/i},
+  "Tiki Wiki CMS Groupware": {test: /tiki-js/},
+  "Ubercart": {test: /uc_cart/i},
+  "Volusion": {test: /a\/j\/javascripts\.js/},
+  "Weebly": {test: /weebly\.com\/weebly\//},
+  "Wibiya": {test: /wibiya\.com\/Loaders\//i},
+  "XenForo": {test: /js\/xenforo\//i},
+  "Yola": {test: /analytics\.yola\.net/},
+  "ZenPhoto": {test: /zp-core\/js/i},
+  "bShare": {test: /static\.bshare\.cn\/b/},
+  "cnzz": {test: /(w|s\d+)\.cnzz\.com\/(c|stat)\.php/i},
+  "reCaptcha": {test: /(google\.com\/recaptcha|api\.recaptcha\.net\/)/i},
+  "script.aculo.us": {test: /scriptaculous\.js/i},
+  "segmentfault": {test: /w\.segmentfault\.com\/card\/\d+\.js/i},
+  "Twitter": {test: /platform\.twitter\.com/i}
 };
 const cssGlobalLibs = {
   "Bootstrap": {
     url: "https://github.com/twbs/bootstrap",
-    existReg: /bootstrap(-theme)?\.(min\.)?css/
+    test: /bootstrap(-theme)?\.(min\.)?css/
   },
   "Font Awesome": {
     url: "https://github.com/FontAwesome/Font-Awesome",
-    existReg: /font-awesome\.(min\.)?css/,
+    test: /font-awesome\.(min\.)?css/,
   },
   "jsDoc": {
-    existReg: /jsdoc\.(min\.)?css/i
+    test: /jsdoc\.(min\.)?css/i
   },
 };
 
@@ -71,7 +71,7 @@ export default function resourceParser(app = {}) {
     .each((lib, name)=>lib.name = name)
     .filter((lib, name)=>_.some(document.styleSheets, style=> {
       if (!style.href) return false;
-      return lib.existReg.test(style.href);
+      return lib.test.test(style.href);
     }))
     .each(function (lib) {
       css[lib.name] = _.extend({}, lib);
@@ -81,7 +81,7 @@ export default function resourceParser(app = {}) {
     .each((lib, name)=>lib.name = name)
     .filter((lib, name)=>_.some(document.scripts, script=> {
       if (!script.src) return false;
-      return lib.existReg.test(script.src);
+      return lib.test.test(script.src);
     }))
     .each(function (lib) {
       js[lib.name] = _.extend({}, lib);

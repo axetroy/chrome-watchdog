@@ -21,19 +21,19 @@ eachComment(document.documentElement);
 
 const commentTester = {
   "html5shiv": {
-    url: "",
+    url: "https://github.com/aFarkas/html5shiv",
     test: /html5shiv(\.min)?\.js/
   },
-  "json3": {
-    url: "",
+  "json3.js": {
+    url: "https://github.com/bestiejs/json3",
     test: /json3(\.min)\.js/
   },
-  "respond": {
-    url: "",
+  "respond.js": {
+    url: "https://github.com/scottjehl/Respond",
     test: /respond(\.min)\.js/
   },
   "webSocket.js": {
-    url: "",
+    url: "https://github.com/gimite/web-socket-js",
     test: /swfobject/,
   }
 };
@@ -42,12 +42,10 @@ export default function commentsParser(apps = {}) {
 
   _.each(commentTester, function (app, name) {
     if (apps[name]) return;
-    console.log(app);
-    _.each(comments, function (node) {
-      let text = node.outerHTML;
-      console.log(text);
-      if (app.test.test(text)) {
-        console.log(app);
+    _.each(comments, function (node, i) {
+      let text = node.textContent;
+      if (app.test.test(text) && !apps[name]) {
+        apps[name] = app;
       }
     });
 

@@ -7,6 +7,7 @@ import metParser from './lib/meta-parser';
 import resourceParser from './lib/resource-parser';
 import classParser from './lib/class-parser';
 import htmlParser from './lib/html-parser';
+import commentParser from './lib/comment-parser';
 
 function parse() {
   let apps = {};
@@ -16,6 +17,7 @@ function parse() {
   metParser(apps);
   classParser(apps);
   htmlParser(apps);
+  commentParser(apps);
 
   let script = document.querySelector('#chromeWatchDog');
   script.setAttribute('app', JSON.stringify(apps || {}));

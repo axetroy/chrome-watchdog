@@ -16,6 +16,8 @@ import {resolveImg} from './lib/resolveImg';
  *
  */
 
+
+
 class List extends Component {
   constructor() {
     super();

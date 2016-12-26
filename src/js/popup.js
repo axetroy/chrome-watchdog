@@ -55,7 +55,7 @@ class List extends Component {
     let ele = event.srcElement;
     ele.setAttribute('init-src', ele.src);
     let name = ele.getAttribute('app');
-    resolveImg(`ico/${name}`, ['.png', '.jgp'])
+    resolveImg(`ico/${name.replace(/\s+/g, '-')}`, ['.png', '.jgp'])
       .then(function (img) {
         ele.src = img.src;
       })

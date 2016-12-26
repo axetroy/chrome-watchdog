@@ -360,6 +360,15 @@ const jsGlobalLibs = {
       return window.Babel && Babel.version ? Babel.version : null;
     }
   },
+  "TypeScript": {
+    url: "https://www.typescriptlang.org/",
+    get exist() {
+      return typeof ts !== 'undefined' && _.isObject(ts.Debug);
+    },
+    get version() {
+      return ts.version;
+    }
+  },
   "jQuery.hotkeys": {
     url: "",
     get exist() {

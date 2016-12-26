@@ -378,7 +378,7 @@ const jsGlobalLibs = {
   "Rxjs": {
     url: "",
     get exist() {
-      return window.Rx;
+      return window.Rx && (_.isFunction(Rx.Observable) || _.isObject(Rx.Scheduler) || _.isFunction(Rx.Subject));
     }
   },
   "flv.js": {

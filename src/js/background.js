@@ -55,6 +55,13 @@ import {resolveImg, loadImg} from './lib/resolveImg';
 
   // =========================  主要程序  =========================
 
+
+  // 发送请求前，读取header
+  chrome.webRequest.onBeforeSendHeaders.addListener(function (details) {
+    // TODO
+    return {requestHeaders: details.requestHeaders};
+  }, {urls: ["<all_urls>"]}, ["requestHeaders"]);
+
   // 监听http请求，读取header
   chrome.webRequest.onHeadersReceived.addListener(function (details) {
     if (details.tabId < 0)return;   // ignore the background tab
@@ -64,8 +71,6 @@ import {resolveImg, loadImg} from './lib/resolveImg';
     appInfo[details.tabId] = appInfo[details.tabId] || {};
     appInfo[details.tabId].client = appInfo[details.tabId].client || {};
     appInfo[details.tabId].server = appInfo[details.tabId].server || {};
-
-    console.log(details.type, details.url);
 
     co(function*() {
       let tab = yield getTabById(details.tabId);

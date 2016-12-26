@@ -59,6 +59,10 @@ const cssGlobalLibs = {
   "jsDoc": {
     test: /jsdoc\.(min\.)?css/i
   },
+  "Normalize.css": {
+    url: "https://necolas.github.io/normalize.css",
+    test: /normalize\.(min\.)?css/
+  }
 };
 
 // 根据 src="/****" href="/****" 进行判断

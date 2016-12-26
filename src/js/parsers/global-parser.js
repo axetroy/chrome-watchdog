@@ -294,7 +294,7 @@ const jsGlobalLibs = {
   "SWFObject": {
     url: "",
     get exist() {
-      return typeof SWFObject !== 'undefined';
+      return typeof SWFObject !== 'undefined' || typeof swfobject !== 'undefined';
     }
   },
   "Google Loader": {

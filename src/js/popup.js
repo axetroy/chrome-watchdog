@@ -17,7 +17,6 @@ import {resolveImg} from './lib/resolveImg';
  */
 
 
-
 class List extends Component {
   constructor() {
     super();
@@ -41,6 +40,10 @@ class List extends Component {
 
   }
 
+  static normalizeName(name) {
+    return name.replace(/\s+/g, '-');
+  }
+
   initData() {
     chrome.tabs.getSelected(null, (tab)=> {
       this.state.tab = tab;
@@ -55,7 +58,7 @@ class List extends Component {
     let ele = event.srcElement;
     ele.setAttribute('init-src', ele.src);
     let name = ele.getAttribute('app');
-    resolveImg(`ico/${name.replace(/\s+/g, '-')}`, ['.png', '.jgp'])
+    resolveImg(`ico/${List.normalizeName(name)}`, ['.png', '.jgp'])
       .then(function (img) {
         ele.src = img.src;
       })
@@ -70,7 +73,7 @@ class List extends Component {
       return (
         <a target="_blank" href={url} title={url}
            app={JSON.stringify(app)}>
-          <img className={"ico"} src={"ico/" + (app.name || '').replace(/\s+/g, '-') + ".ico"} app={app.name}
+          <img className={"ico"} src={"ico/" + List.normalizeName(app.name) + ".ico"} app={app.name}
                onerror={this.imgErrorHandler}/>
           {app.name}&nbsp;
           <span className={"version"}>{app.version || ''}</span>

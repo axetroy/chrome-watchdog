@@ -35,11 +35,15 @@ const urlTester = {
     types: types.common
   },
   "PHP": {
-    url: "",
     tests: [/\.php$/],
     type: type.server,
     types: types.common
-  }
+  },
+  "百度分享": {
+    tests: [/bdimg\.share\.baidu\.com\/static\//],
+    type: type.client,
+    types: ['script']
+  },
 };
 
 export default function urlParser(detail) {

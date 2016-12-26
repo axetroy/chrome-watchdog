@@ -1,12 +1,12 @@
 import _ from "underscore";
 
 const jsScriptTags = {
-  "百度统计": {test: /hm\.baidu\.com\/hm?\.js/i},
-  "百度分享": {test: /bdimg\.share\.baidu\.com\/static\/js\//},
-  "无觅": {test: /widget\.wumii\.(cn|com)\/ext\/relatedItemsWidget/},
-  "多说": {test: /static\.duoshuo\.com\/embed\.js/},
-  "友言": {test: /v\d\.uyan\.cc\/(code\/uyan\.js|js\/iframe\.js)/},
-  "友荐": {test: /v\d\.ujian\.cc\/code\/ujian\.js/},
+  "\u767e\u5ea6\u7edf\u8ba1": {test: /hm\.baidu\.com\/hm?\.js/i, a: 33},        // 百度统计
+  "\u767e\u5ea6\u5206\u4eab": {test: /bdimg\.share\.baidu\.com\/static\/js\//}, // 百度分享
+  "\u65e0\u89c5": {test: /widget\.wumii\.(cn|com)\/ext\/relatedItemsWidget/},   // 无觅
+  "\u591a\u8bf4": {test: /static\.duoshuo\.com\/embed\.js/},                    // 多说
+  "\u53cb\u8a00": {test: /v\d\.uyan\.cc\/(code\/uyan\.js|js\/iframe\.js)/},     // 友言
+  "\u53cb\u8350": {test: /v\d\.ujian\.cc\/code\/ujian\.js/},                    // 友荐
   "AdSense": {test: /pagead\/show_ads\.js/},
   "AddThis": {test: /addthis\.com\/js/},
   "Alfresco": {test: /(alfresco)+(-min)?(\/scripts\/menu)?\.js/},

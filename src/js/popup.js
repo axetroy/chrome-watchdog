@@ -53,6 +53,7 @@ class List extends Component {
 
   imgErrorHandler(event) {
     let ele = event.srcElement;
+    ele.setAttribute('init-src', ele.src);
     let name = ele.getAttribute('app');
     resolveImg(`ico/${name}`, ['.png', '.jgp'])
       .then(function (img) {

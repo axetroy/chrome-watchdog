@@ -78,7 +78,8 @@ import {resolveImg, loadImg} from './lib/resolveImg';
 
       // parse the url
       let app = urlParser(details);
-      _.extend(appInfo[details.tabId].client, app);
+      _.extend(appInfo[details.tabId].client, app.client);
+      _.extend(appInfo[details.tabId].server, app.server);
 
       if (isSame) {
         // parse the header
@@ -86,8 +87,7 @@ import {resolveImg, loadImg} from './lib/resolveImg';
         _.extend(appInfo[details.tabId].server, app);
       }
 
-      app = appInfo[details.tabId];
-      chrome.runtime.sendMessage({action: 'UPDATE:POP', app, id: details.tabId});   // notify the pop update view
+      chrome.runtime.sendMessage({action: 'UPDATE:POP', app: appInfo[details.tabId], id: details.tabId});   // notify the pop update view
       changeIcon(details.tabId);
     }).catch(function (err) {
       console.error(err);
@@ -106,6 +106,7 @@ import {resolveImg, loadImg} from './lib/resolveImg';
         break;
       case 'CONTENT:PARSE':   // content 解析完成
         appInfo[tabId] = appInfo[tabId] || {};
+        appInfo[tabId].client = appInfo[tabId].client || {};
         appInfo[tabId].client = request.data;
 
         changeIcon(tabId, appInfo[tabId]);

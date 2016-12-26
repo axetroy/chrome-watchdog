@@ -8,6 +8,11 @@ const types = {
   common: ['main_frame', 'xmlhttprequest', 'ping', 'script', 'object', 'other']
 };
 
+const type = {
+  client: 'client',
+  server: 'server'
+};
+
 const urlTester = {
   "Google Map": {
     url: "https://developers.google.com/maps/documentation/javascript/?hl=zh-cn",
@@ -15,6 +20,7 @@ const urlTester = {
       /maps\.googleapis\.com/,
       /\.google\.[a-z]+\/map/
     ],
+    type: type.client,
     types: types.common
   },
   "高德地图": {
@@ -25,12 +31,22 @@ const urlTester = {
   "百度地图": {
     url: "http://lbsyun.baidu.com/",
     tests: [/api\.map\.baidu\.com/],
+    type: type.client,
+    types: types.common
+  },
+  "PHP": {
+    url: "",
+    tests: [/\.php$/],
+    type: type.server,
     types: types.common
   }
 };
 
 export default function urlParser(detail) {
-  let app = {};
+  let app = {
+    [type.client]: {},
+    [type.server]: {}
+  };
 
   _.each(urlTester, function (entity, name) {
 
@@ -38,7 +54,7 @@ export default function urlParser(detail) {
     let correctType = _.includes(entity.types, detail.type);
 
     if (exist && correctType) {
-      app[name] = _.extend({exist: true, name}, entity);
+      app[entity.type][name] = _.extend({exist: true, name}, entity);
     }
 
   });

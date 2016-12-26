@@ -41,7 +41,8 @@ let metaReg = {
     "ClanSphere": /ClanSphere/,
     "Mura CMS": /Mura CMS\s*(.*)/i,
     "Tiki Wiki CMS Groupware": /Tiki/i,
-    "GitBook": /GitBook\s([\d\.]+)/
+    "GitBook": /GitBook\s([\d\.]+)/,
+    "Discuz": /Discuz\!?\s?(\w+)/i
   },
   "copyright": {
     "phpBB": /phpBB/i

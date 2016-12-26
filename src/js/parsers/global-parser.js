@@ -168,7 +168,7 @@ const jsGlobalLibs = {
   "Lo-dash": {
     url: "",
     get exist() {
-      return typeof window._ === 'function' && window._.name === 'lodash'
+      return typeof window._ === 'function' && (window._.name === 'lodash' || typeof window._.zipObject === 'function');
     },
     get version() {
       return window._.VERSION;

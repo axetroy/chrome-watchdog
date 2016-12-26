@@ -35,6 +35,13 @@ const commentTester = {
   "webSocket.js": {
     url: "https://github.com/gimite/web-socket-js",
     test: /swfobject/,
+  },
+  "es5-shim": {
+    test: /es5-shim[\w\.]*\.js/
+  },
+  "videojs-ie8": {
+    url: "https://github.com/videojs/ie8",
+    test: /video-ie8[\w\.]*\.js/
   }
 };
 

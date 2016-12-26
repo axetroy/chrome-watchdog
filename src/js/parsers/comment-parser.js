@@ -52,7 +52,7 @@ export default function commentsParser(apps = {}) {
     _.each(comments, function (node, i) {
       let text = node.textContent;
       if (app.test.test(text) && !apps[name]) {
-        apps[name] = app;
+        apps[name] = _.extend({exist: true, name}, app);
       }
     });
 

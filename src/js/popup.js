@@ -1,7 +1,6 @@
 import "../css/popup.css";
 import {h, render, Component} from 'preact';
 import _ from 'underscore';
-import transform from './lib/transform';
 import {resolveImg} from './lib/resolveImg';
 
 /**
@@ -20,9 +19,10 @@ import {resolveImg} from './lib/resolveImg';
 class List extends Component {
   constructor() {
     super();
-    this.state.bg = chrome.extension.getBackgroundPage();
-    this.state.apps = {};
-    this.state.tab = {};
+    this.state.global = chrome.extension.getBackgroundPage();       // 全局对象
+    this.state.apps = [];                                           // 当前apps列表
+    this.state.tab = {};                                            // 当前标签
+    this.state.store = this.state.global.store;                     // 存储器
 
     this.initData();
 
@@ -32,7 +32,7 @@ class List extends Component {
           chrome.tabs.getSelected(null, (tab)=> {
             this.state.tab = tab;
             if (tab.id !== request.id) return;
-            this.setState({apps: transform(request.app)});
+            this.setState({apps: request.data});
           });
           break;
       }
@@ -48,8 +48,8 @@ class List extends Component {
     chrome.tabs.getSelected(null, (tab)=> {
       this.state.tab = tab;
       chrome.runtime.sendMessage({action: 'GET', id: tab.id}, (response)=> {
-        let apps = this.state.bg.appInfo[tab.id];
-        this.setState({apps: transform(apps)});
+        let apps = this.state.store.list(tab.id);
+        this.setState({apps});
       });
     });
   }
@@ -68,24 +68,30 @@ class List extends Component {
   }
 
   renderList(apps) {
-    return _.map(apps, app=> {
-      let url = app.url || `https://www.google.com/#q=${app.name}`;
-      return (
-        <a target="_blank" href={url} title={url}
-           app={JSON.stringify(app)}>
-          <img className={"ico"} src={"ico/" + List.normalizeName(app.name) + ".ico"} app={app.name}
-               onerror={this.imgErrorHandler}/>
-          {app.name}&nbsp;
-          <span className={"version"}>{app.version || ''}</span>
-        </a>
-      );
-    });
+    return _.chain(apps)
+      .filter(app=>app.name)
+      .map(app=> {
+        let url = app.url || `https://www.google.com/#q=${app.name}`;
+        return (
+          <a target="_blank" href={url} title={url}
+             app={JSON.stringify(app)}>
+            <img className={"ico"} src={"ico/" + List.normalizeName(app.name) + ".ico"} app={app.name}
+                 onerror={this.imgErrorHandler}/>
+            {app.name}&nbsp;
+            <span className={"version"}>{app.version || ''}</span>
+          </a>
+        );
+      })
+      .value();
   }
 
   render(props, state) {
     return (
       <div>
         {this.renderList(state.apps)}
+        <div style={{display: 'none'}}>
+          {JSON.stringify(state.apps, null, 2)}
+        </div>
       </div>
     )
   }

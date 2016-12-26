@@ -1,7 +1,11 @@
-import _ from "underscore";
+/**
+ * Created by axetroy on 16-12-26.
+ */
 
-const jsScriptTags = {
-  "\u767e\u5ea6\u7edf\u8ba1": {test: /hm\.baidu\.com\/hm?\.js/i, a: 33},        // 百度统计
+import _ from 'underscore';
+
+const jsTester = {
+  "\u767e\u5ea6\u7edf\u8ba1": {test: /hm\.baidu\.com\/hm?\.js/i},        // 百度统计
   "\u767e\u5ea6\u5206\u4eab": {test: /bdimg\.share\.baidu\.com\/static\/js\//}, // 百度分享
   "\u65e0\u89c5": {test: /widget\.wumii\.(cn|com)\/ext\/relatedItemsWidget/},   // 无觅
   "\u591a\u8bf4": {test: /static\.duoshuo\.com\/embed\.js/},                    // 多说
@@ -47,7 +51,8 @@ const jsScriptTags = {
   "segmentfault": {test: /w\.segmentfault\.com\/card\/\d+\.js/i},
   "Twitter": {test: /platform\.twitter\.com/i}
 };
-const cssGlobalLibs = {
+
+const cssTester = {
   "Bootstrap": {
     url: "https://github.com/twbs/bootstrap",
     test: /bootstrap(-theme)?\.(min\.)?css/
@@ -65,28 +70,55 @@ const cssGlobalLibs = {
   }
 };
 
-// 根据 src="/****" href="/****" 进行判断
-export default function resourceParser(app = {}) {
+function parseJS(details) {
+  let app = {};
+  _.each(jsTester, function (entity, name) {
+    let reg = entity.test;
+    if (reg.test(details.url)) {
+      app = _.extend({exist: true, name}, entity);
+    }
+  });
+  return app;
+}
 
+function parseCSS(details) {
+  let app = {};
+  _.each(cssTester, function (entity, name) {
+    let reg = entity.test;
+    if (reg.test(details.url)) {
+      app = _.extend({exist: true, name}, entity);
+    }
+  });
+  return app;
+}
+
+export function parseRequest(details) {
+  let app = {};
+  switch (details.type) {
+    case 'script':
+      app = parseJS(details);
+      break;
+    case 'stylesheet':
+      app = parseCSS(details);
+      break;
+  }
+  return app;
+}
+
+export function parseContent(app = {}) {
   let css = {};
   let js = {};
 
-  _.chain(cssGlobalLibs)
+  _.chain(cssTester)
     .each((lib, name)=>lib.name = name)
-    .filter((lib, name)=>_.some(document.styleSheets, style=> {
-      if (!style.href) return false;
-      return lib.test.test(style.href);
-    }))
+    .filter((lib, name)=>_.some(document.styleSheets, style=> lib.test.test(style.href)))
     .each(function (lib) {
       css[lib.name] = _.extend({}, lib);
     });
 
-  _.chain(jsScriptTags)
+  _.chain(jsTester)
     .each((lib, name)=>lib.name = name)
-    .filter((lib, name)=>_.some(document.scripts, script=> {
-      if (!script.src) return false;
-      return lib.test.test(script.src);
-    }))
+    .filter((lib, name)=>_.some(document.scripts, script=> lib.test.test(script.src)))
     .each(function (lib) {
       js[lib.name] = _.extend({}, lib);
     });

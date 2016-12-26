@@ -1,18 +1,59 @@
 import _ from 'underscore';
 import Q from 'q';
 import co from 'co';
-import transform from './lib/transform';
 
 import headersParser from './parsers/headers-parser';
 import urlParser from './parsers/url-parser';
+import {parseRequest} from './parsers/resource-parser';
 import {resolveImg, loadImg} from './lib/resolveImg';
 
 (function (global) {
-  const appInfo = global.appInfo = {};
+
+  class Store {
+    constructor() {
+      this.data = {};
+    }
+
+    has(tabId, appName) {
+      let data = this.data[tabId];
+      return data ? data.hasOwnProperty(appName) : false;
+    }
+
+    set(tabId, appObject) {
+      let container = this.data[tabId] = this.data[tabId] || {};
+      if (!container[appObject.name]) {
+        container[appObject.name] = appObject;
+      } else {
+        _.extend(container[appObject.name], appObject);
+      }
+    }
+
+    get(tabId) {
+      return this.data[tabId];
+    }
+
+    list(tabId) {
+      let data = this.data[tabId] || [];
+      return _.chain(data)
+        .map(v=>v)
+        .sortBy(v=>v.name)
+        .value();
+    }
+
+    all() {
+
+    }
+
+    remove(tabId) {
+      delete this.data[tabId];
+    }
+  }
+
+  let store = global.store = new Store();
 
   // 改变图标
   function changeIcon(tabId) {
-    let app = transform(appInfo[tabId]);
+    let app = store.list(tabId);
     let firstApp = app[0];
     if (_.isEmpty(firstApp) || !firstApp.name) return;
     let icoPath = `ico/${firstApp.name.replace(/\s/g, '-')}`;
@@ -53,12 +94,26 @@ import {resolveImg, loadImg} from './lib/resolveImg';
     }
   }
 
+
   // =========================  主要程序  =========================
 
 
   // 发送请求前，读取header
   chrome.webRequest.onBeforeSendHeaders.addListener(function (details) {
-    // TODO
+    if (details.tabId < 0)return;   // ignore the background tab
+    if (details.type === 'main_frame') {
+      store.remove(details.tabId);     // 第一次加载页面，在删除数据
+    }
+
+
+    // 资源解析
+    if (details.type === 'script' || details.type === 'stylesheet') {
+      let appObject = parseRequest(details);
+      if (!_.isEmpty(appObject)) {
+        store.set(details.tabId, appObject);
+      }
+    }
+
     return {requestHeaders: details.requestHeaders};
   }, {urls: ["<all_urls>"]}, ["requestHeaders"]);
 
@@ -66,28 +121,19 @@ import {resolveImg, loadImg} from './lib/resolveImg';
   chrome.webRequest.onHeadersReceived.addListener(function (details) {
     if (details.tabId < 0)return;   // ignore the background tab
 
-    if (details.type === 'main_frame') delete appInfo[details.tabId];   // first load and delete the last tab's data
-
-    appInfo[details.tabId] = appInfo[details.tabId] || {};
-    appInfo[details.tabId].client = appInfo[details.tabId].client || {};
-    appInfo[details.tabId].server = appInfo[details.tabId].server || {};
-
     co(function*() {
       let tab = yield getTabById(details.tabId);
       let isSame = yield isSameOrigin(tab.url)(details.url);
 
       // parse the url
-      let app = urlParser(details);
-      _.extend(appInfo[details.tabId].client, app.client);
-      _.extend(appInfo[details.tabId].server, app.server);
+      _.each(urlParser(details), app=>store.set(details.tabId, app));
 
       if (isSame) {
         // parse the header
-        let app = headersParser(details.responseHeaders);
-        _.extend(appInfo[details.tabId].server, app);
+        _.each(headersParser(details.responseHeaders), app=>store.set(details.tabId, app));
       }
 
-      chrome.runtime.sendMessage({action: 'UPDATE:POP', app: appInfo[details.tabId], id: details.tabId});   // notify the pop update view
+      chrome.runtime.sendMessage({action: 'UPDATE:POP', data: store.list(details.tabId), id: details.tabId});   // notify the pop update view
       changeIcon(details.tabId);
     }).catch(function (err) {
       console.error(err);
@@ -105,24 +151,23 @@ import {resolveImg, loadImg} from './lib/resolveImg';
       case 'GET':             // popup 获取
         break;
       case 'CONTENT:PARSE':   // content 解析完成
-        appInfo[tabId] = appInfo[tabId] || {};
-        appInfo[tabId].client = appInfo[tabId].client || {};
-        appInfo[tabId].client = request.data;
 
-        changeIcon(tabId, appInfo[tabId]);
+        _.each(request.data, appObject=>store.set(tabId, appObject));
+
+        changeIcon(tabId);
         chrome.pageAction.show(tabId);
         break;
       case 'POP:DONE':        // pop 渲染完成
-        changeIcon(tabId, request.app);
+        changeIcon(tabId);
         break;
       default:
     }
-    sendResponse({message: request, sender, sendResponse, app: appInfo[tabId] || {}});
+    sendResponse({message: request, sender, sendResponse, app: store.get(tabId) || {}});
   });
 
   // when close the tab
   chrome.tabs.onRemoved.addListener(function (tabId) {
-    delete appInfo[tabId];    // free memory
+    store.remove(tabId);
   });
 
 })(typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : this || {});

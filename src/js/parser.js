@@ -4,7 +4,7 @@
 
 import globalParser from './parsers/global-parser';
 import metParser from './parsers/meta-parser';
-import resourceParser from './parsers/resource-parser';
+import {parseContent} from './parsers/resource-parser';
 import classParser from './parsers/class-parser';
 import htmlParser from './parsers/html-parser';
 import commentParser from './parsers/comment-parser';
@@ -13,7 +13,7 @@ function parse() {
   let apps = {};
 
   globalParser(apps);
-  resourceParser(apps);
+  parseContent(apps);
   metParser(apps);
   classParser(apps);
   htmlParser(apps);

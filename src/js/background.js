@@ -56,7 +56,7 @@ import {resolveImg, loadImg} from './lib/resolveImg';
     let app = store.list(tabId);
     let firstApp = app[0];
     if (_.isEmpty(firstApp) || !firstApp.name) return;
-    let icoPath = `ico/${firstApp.name.replace(/\s/g, '-')}`;
+    let icoPath = `ico/${firstApp.name.replace(/\s+/g, '-')}`;
     return loadImg(icoPath + '.ico')
       .then(img=>Q.resolve(img), function () {
         return resolveImg(icoPath);

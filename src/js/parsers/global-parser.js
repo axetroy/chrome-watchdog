@@ -464,6 +464,15 @@ const jsGlobalLibs = {
     get version() {
       return KISSY.versino;
     }
+  },
+  "Riot.js": {
+    url: "https://github.com/riot/riot",
+    get exist() {
+      return typeof riot === 'object' && _.isFunction(riot.mount);
+    },
+    get version() {
+      return riot.version;
+    }
   }
 
 };

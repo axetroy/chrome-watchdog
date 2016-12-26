@@ -26,6 +26,21 @@ const jsGlobalLibs = {
       return (typeof $state === 'object' && typeof $state.go === 'function') || !!document.querySelector(['ui-view']);
     }
   },
+  "Angular Translate": {
+    url: "https://angular-translate.github.io/",
+    get exist(){
+      let root = document.querySelector('[ng-app]');
+      if (typeof angular !== 'object' || !root) return false;
+      let injector = angular.element(root).injector();
+      let $translate;
+      try {
+        $translate = injector.get('$translate');
+      } catch (err) {
+        return false;
+      }
+      return (typeof $translate === 'function' && typeof $translate.use === 'function')
+    }
+  },
   "Angular Material": {
     url: "https://material.angularjs.org",
     get exist() {

@@ -446,6 +446,24 @@ const jsGlobalLibs = {
     get exist() {
       return typeof io === 'function' && typeof io.Socket === 'function';
     }
+  },
+  "CloudFlare": {
+    url: "",
+    get exist() {
+      return typeof CloudFlare === 'object' && _.isFunction(CloudFlare.push);
+    },
+    get version() {
+      return CloudFlare.version;
+    }
+  },
+  "KISSY": {
+    url: "",
+    get exist() {
+      return typeof KISSY === 'object';
+    },
+    get version() {
+      return KISSY.versino;
+    }
   }
 
 };

@@ -16,7 +16,7 @@
 
 ## [English Documentation](https://github.com/axetroy/WatchDog/blob/master/README.md)
 
-## Usage
+## 如何使用
 
 1. Clone the repository.
 2. Install [yarn](https://yarnpkg.com): `npm install -g yarn`.

@@ -4,7 +4,7 @@ import co from 'co';
 
 import headersParser from './parsers/headers-parser';
 import urlParser from './parsers/url-parser';
-import {parseRequest} from './parsers/resource-parser';
+import {parseJSRequest, parseCSSRequest} from './parsers/resource-parser';
 import {resolveImg, loadImg} from './lib/resolveImg';
 
 (function (global) {
@@ -101,18 +101,24 @@ import {resolveImg, loadImg} from './lib/resolveImg';
   // 发送请求前，读取header
   chrome.webRequest.onBeforeSendHeaders.addListener(function (details) {
     if (details.tabId < 0)return;   // ignore the background tab
-    if (details.type === 'main_frame') {
-      store.remove(details.tabId);     // 第一次加载页面，在删除数据
-    }
+    if (details.type === 'main_frame') store.remove(details.tabId);     // 第一次加载页面，在删除数据
 
+    let appObject = {};
 
     // 资源解析
-    if (details.type === 'script' || details.type === 'stylesheet') {
-      let appObject = parseRequest(details);
-      if (!_.isEmpty(appObject)) {
-        store.set(details.tabId, appObject);
-      }
+    switch (details.type) {
+      case 'script':
+        appObject = parseJSRequest(details);
+        break;
+      case 'stylesheet':
+        appObject = parseCSSRequest(details);
+        break;
     }
+
+    // parse the url
+    _.each(urlParser(details), app=>store.set(details.tabId, app));
+
+    store.set(details.tabId, appObject);
 
     return {requestHeaders: details.requestHeaders};
   }, {urls: ["<all_urls>"]}, ["requestHeaders"]);
@@ -124,9 +130,6 @@ import {resolveImg, loadImg} from './lib/resolveImg';
     co(function*() {
       let tab = yield getTabById(details.tabId);
       let isSame = yield isSameOrigin(tab.url)(details.url);
-
-      // parse the url
-      _.each(urlParser(details), app=>store.set(details.tabId, app));
 
       if (isSame) {
         // parse the header

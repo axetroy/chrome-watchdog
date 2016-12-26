@@ -42,7 +42,8 @@ export default function urlParser(detail) {
 
   _.each(urlTester, function (entity, name) {
 
-    let exist = entity.tests.some(test=>test.test(detail.url));
+    let url = detail.url.replace(/(\?.*)/, '');     // remove the query string, like ?name=axe
+    let exist = entity.tests.some(test=>test.test(url));
     let correctType = _.includes(entity.types, detail.type);
 
     if (exist && correctType) {

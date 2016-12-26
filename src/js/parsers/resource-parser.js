@@ -70,7 +70,7 @@ const cssTester = {
   }
 };
 
-function parseJS(details) {
+export function parseJSRequest(details) {
   let app = {};
   _.each(jsTester, function (entity, name) {
     let reg = entity.test;
@@ -81,7 +81,7 @@ function parseJS(details) {
   return app;
 }
 
-function parseCSS(details) {
+export function parseCSSRequest(details) {
   let app = {};
   _.each(cssTester, function (entity, name) {
     let reg = entity.test;
@@ -89,19 +89,6 @@ function parseCSS(details) {
       app = _.extend({exist: true, name}, entity);
     }
   });
-  return app;
-}
-
-export function parseRequest(details) {
-  let app = {};
-  switch (details.type) {
-    case 'script':
-      app = parseJS(details);
-      break;
-    case 'stylesheet':
-      app = parseCSS(details);
-      break;
-  }
   return app;
 }
 
@@ -113,14 +100,14 @@ export function parseContent(app = {}) {
     .each((lib, name)=>lib.name = name)
     .filter((lib, name)=>_.some(document.styleSheets, style=> lib.test.test(style.href)))
     .each(function (lib) {
-      css[lib.name] = _.extend({}, lib);
+      css[lib.name] = _.extend({exist: true}, lib);
     });
 
   _.chain(jsTester)
     .each((lib, name)=>lib.name = name)
     .filter((lib, name)=>_.some(document.scripts, script=> lib.test.test(script.src)))
     .each(function (lib) {
-      js[lib.name] = _.extend({}, lib);
+      js[lib.name] = _.extend({exist: true}, lib);
     });
 
   _.extend(app, css, js);

@@ -28,7 +28,7 @@ const jsGlobalLibs = {
   },
   "Angular Translate": {
     url: "https://angular-translate.github.io/",
-    get exist(){
+    get exist() {
       let root = document.querySelector('[ng-app]');
       if (typeof angular !== 'object' || !root) return false;
       let injector = angular.element(root).injector();
@@ -39,6 +39,21 @@ const jsGlobalLibs = {
         return false;
       }
       return (typeof $translate === 'function' && typeof $translate.use === 'function')
+    }
+  },
+  "Restangular": {
+    url: "http://github.com/mgonto/restangular",
+    get exist() {
+      let root = document.querySelector('[ng-app]');
+      if (typeof angular !== 'object' || !root) return false;
+      let injector = angular.element(root).injector();
+      let Restangular;
+      try {
+        Restangular = injector.get('Restangular');
+      } catch (err) {
+        return false;
+      }
+      return Restangular && _.isFunction(Restangular.one) && _.isFunction(Restangular.all)
     }
   },
   "Angular Material": {

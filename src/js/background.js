@@ -4,6 +4,7 @@ import co from 'co';
 
 import headersParser from './parsers/headers-parser';
 import urlParser from './parsers/url-parser';
+import cookiesParser from './parsers/cookies-parser';
 import {parseJSRequest, parseCSSRequest} from './parsers/resource-parser';
 import {resolveImg, loadImg} from './lib/resolveImg';
 
@@ -100,25 +101,39 @@ import {resolveImg, loadImg} from './lib/resolveImg';
 
   // 发送请求前，读取header
   chrome.webRequest.onBeforeSendHeaders.addListener(function (details) {
-    if (details.tabId < 0)return;   // ignore the background tab
+    if (details.tabId < 0) return;   // ignore the background tab
     if (details.type === 'main_frame') store.remove(details.tabId);     // 第一次加载页面，在删除数据
 
-    let appObject = {};
+    co(function*() {
 
-    // 资源解析
-    switch (details.type) {
-      case 'script':
-        appObject = parseJSRequest(details);
-        break;
-      case 'stylesheet':
-        appObject = parseCSSRequest(details);
-        break;
-    }
+      // parse the resource
+      (function () {
+        let appObject = {};
+        switch (details.type) {
+          case 'script':
+            appObject = parseJSRequest(details);
+            break;
+          case 'stylesheet':
+            appObject = parseCSSRequest(details);
+            break;
+        }
+        store.set(details.tabId, appObject);
+      })();
 
-    // parse the url
-    _.each(urlParser(details), app=>store.set(details.tabId, app));
+      let tab = yield getTabById(details.tabId);
+      let isSame = yield isSameOrigin(tab.url)(details.url);
 
-    store.set(details.tabId, appObject);
+      // parse the url
+      _.each(urlParser(details), app=>store.set(details.tabId, app));
+
+      if (isSame) {
+        // parse the cookies, iframe的cookies不解析
+        _.each(cookiesParser(details), app=>store.set(details.tabId, app));
+      }
+
+    }).catch(function (err) {
+      console.error(err);
+    });
 
     return {requestHeaders: details.requestHeaders};
   }, {urls: ["<all_urls>"]}, ["requestHeaders"]);

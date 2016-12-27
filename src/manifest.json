@@ -11,6 +11,7 @@
   "manifest_version": 2,
   "content_scripts": [
     {
+      "match_about_blank": true,
       "matches": [
         "http://*/*",
         "https://*/*"

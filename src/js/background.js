@@ -10,6 +10,8 @@ import {resolveImg, loadImg} from './lib/resolveImg';
 
 (function (global) {
 
+  const A_ELEMENT = document.createElement('a');
+
   class Store {
     constructor() {
       this.data = {};
@@ -85,14 +87,12 @@ import {resolveImg, loadImg} from './lib/resolveImg';
   }
 
   // 判断两个url，是否是同源
-  function isSameOrigin(url1) {
-    let originEle = document.createElement('a');
+  function isSameOrigin(url1, url2) {
+    let originEle = A_ELEMENT.cloneNode();
     originEle.href = url1;
-    return function (url2) {
-      let targetEle = document.createElement('a');
-      targetEle.href = url2;
-      return targetEle.hostname === originEle.hostname ? Q.resolve(true) : Q.resolve(false);
-    }
+    let targetEle = A_ELEMENT.cloneNode();
+    targetEle.href = url2;
+    return targetEle.hostname === originEle.hostname;
   }
 
 
@@ -121,15 +121,12 @@ import {resolveImg, loadImg} from './lib/resolveImg';
       })();
 
       let tab = yield getTabById(details.tabId);
-      let isSame = yield isSameOrigin(tab.url)(details.url);
 
       // parse the url
       _.each(urlParser(details), app=>store.set(details.tabId, app));
 
-      if (isSame) {
-        // parse the cookies, iframe的cookies不解析
-        _.each(cookiesParser(details), app=>store.set(details.tabId, app));
-      }
+      // parse the cookies, iframe的cookies不解析
+      isSameOrigin(tab.url, details.url) && _.each(cookiesParser(details), app=>store.set(details.tabId, app));
 
     }).catch(function (err) {
       console.error(err);
@@ -144,12 +141,9 @@ import {resolveImg, loadImg} from './lib/resolveImg';
 
     co(function*() {
       let tab = yield getTabById(details.tabId);
-      let isSame = yield isSameOrigin(tab.url)(details.url);
 
-      if (isSame) {
-        // parse the header
-        _.each(headersParser(details.responseHeaders), app=>store.set(details.tabId, app));
-      }
+      // parse the header
+      isSameOrigin(tab.url, details.url) && _.each(headersParser(details.responseHeaders), app=>store.set(details.tabId, app));
 
       chrome.runtime.sendMessage({action: 'UPDATE:POP', data: store.list(details.tabId), id: details.tabId});   // notify the pop update view
       changeIcon(details.tabId);

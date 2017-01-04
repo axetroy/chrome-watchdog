@@ -501,7 +501,7 @@ const jsGlobalLibs = {
       return typeof KISSY === 'object';
     },
     get version() {
-      return KISSY.versino;
+      return KISSY.version;
     }
   },
   "Riot.js": {
@@ -511,6 +511,12 @@ const jsGlobalLibs = {
     },
     get version() {
       return riot.version;
+    }
+  },
+  "Ace Editor": {
+    url: "https://ace.c9.io/",
+    get exist() {
+      return typeof aceEditor !== 'undefined';
     }
   }
 

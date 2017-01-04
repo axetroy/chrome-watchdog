@@ -89,9 +89,9 @@ class List extends Component {
     return (
       <div>
         {this.renderList(state.apps)}
-        <div style={{display: 'none'}}>
+        <pre style={{display: 'none'}}>
           {JSON.stringify(state.apps, null, 2)}
-        </div>
+        </pre>
       </div>
     )
   }
@@ -101,11 +101,8 @@ class List extends Component {
     let currentTab = this.state.tab;
     chrome.runtime.sendMessage({
       action: 'POP:DONE',
-      id: currentTab.id,
-      title: currentTab.title,
-      app: this.state.apps
+      id: currentTab.id
     });
-    return true;
   }
 
 }

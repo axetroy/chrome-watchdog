@@ -71,6 +71,30 @@ const jsGlobalLibs = {
       return (typeof $mdDialog === 'object' && typeof $mdDialog.alert === 'function');
     }
   },
+  "textAngular": {
+    url: "",
+    get exist() {
+      return typeof textAngular === 'object';
+    }
+  },
+  "angularWebsocket": {
+    url: "",
+    get exist() {
+      return typeof angularWebsocket === 'object';
+    }
+  },
+  "angularClipboard": {
+    url: "",
+    get exist() {
+      return typeof angularClipboard === 'object';
+    }
+  },
+  "angular-file-upload": {
+    url: "",
+    get exist() {
+      return typeof window["angular-file-upload"] === 'object';
+    }
+  },
   "React": {
     url: "https://facebook.github.io",
     get exist() {
@@ -358,6 +382,21 @@ const jsGlobalLibs = {
     },
     get version() {
       return window.Babel && Babel.version ? Babel.version : null;
+    }
+  },
+  "Babel Polyfill": {
+    url: "",
+    get exist() {
+      return window._babelPolyfill === true;
+    }
+  },
+  "code-js": {
+    url: "https://github.com/zloirock/core-js",
+    get exist() {
+      return window.core && typeof core.inspectSource === 'function';
+    },
+    get version() {
+      return core.version;
     }
   },
   "TypeScript": {

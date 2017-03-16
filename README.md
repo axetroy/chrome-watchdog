@@ -1,5 +1,7 @@
 # WatchDog
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/axetroy/WatchDog.svg)](https://greenkeeper.io/)
+
 a chrome extension to detect the lib,framework,server.
 
 **The extension is current in Beta**

@@ -23,7 +23,7 @@
     "q": "^1.4.1",
     "style-loader": "^0.18.0",
     "underscore": "^1.8.3",
-    "webpack": "^2.2.1",
+    "webpack": "^3.0.0",
     "webpack-dev-server": "2.4.3",
     "write-file-webpack-plugin": "4.0.2"
   },

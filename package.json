@@ -17,7 +17,7 @@
     "co": "^4.6.0",
     "css-loader": "^0.28.0",
     "fs-extra": "^2.1.1",
-    "html-webpack-plugin": "2.28.0",
+    "html-webpack-plugin": "2.29.0",
     "immutable": "^3.8.1",
     "preact": "^8.1.0",
     "q": "^1.4.1",
